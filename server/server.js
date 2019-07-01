@@ -23,10 +23,11 @@ io.on("connection", socket => {
     socket.on(ipc.Player.clientHello.toString(), data => {
         player = new Player(data.transform, data.name, socket);
         socket.emit(ipc.Player.clientId.toString(), player.id);
+        socket.broadcast.binary(true).emit(ipc.Player.add.toString(), player.toSimpleNetworkObject());
     });
     socket.on('disconnect', () => {
         if (player)
-            Player.delete(player);
+            Player.delete(player, io);
     });
     console.log('Connection');
 });

@@ -45,6 +45,10 @@ export default class Network {
         this.socket.on(ipc.Player.delete.toString(), vessel => {
             Vessel.delete(game, Vessel.getById(vessel.id));
         });
+        this.socket.on(ipc.Player.add.toString(), data => {
+            new Vessel(game, data.transform, data.name, data.id);
+            console.log('adding id: ' + data.id);
+        });
         this.update();
     }
 
