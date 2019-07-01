@@ -2,13 +2,15 @@ import PlayerSkins from './skins.js';
 export {PlayerSkins as skins};
 
 export default class Vessel {
-    constructor(game, {x, y}, name = "", skin = PlayerSkins.skins.Standard, rotation = 0, color = 0xffffff) {
+    constructor(game, {x, y}, name = "", id = -1, skin = PlayerSkins.skins.Standard, rotation = 0, color = 0xffffff) {
         this.container = new PIXI.Container();
         this.container.position.set(x, y);
         this.subContainer = new PIXI.Container();
         this.container.addChild(this.subContainer);
         this.skin = skin;
         this.factor = 8;
+        this.id = id;
+        Vessel.list.push(this);
 
         let ptsList = [];
         for (let i = 0; i < this.skin.length; i++) {
@@ -77,3 +79,29 @@ export default class Vessel {
         this.nameLabel.text = data;
     }
 }
+
+Vessel.list = [];
+
+Vessel.init = (playerArray, game) => {
+    for (let i = 0, len = playerArray.length; i < len; i++) {
+        new Vessel(game, playerArray[i].transform, playerArray[i].name, playerArray[i].id, PlayerSkins.skins.Standard, playerArray[i].transform.rotation);
+    }
+};
+
+Vessel.getById = (id) => {
+    for (let i = 0, len = Vessel.list.length; i < len; i++) {
+        if (Vessel.list[i].id === id)
+            return Vessel.list[i];
+    }
+    return undefined;
+};
+
+Vessel.delete = (game, vessel) => {
+    console.log(Vessel.list);
+    for (let i = 0, len = Vessel.list.length; i < len; i++) {
+        if (Vessel.list[i].id === vessel.id)
+            Vessel.list.slice(i, 1);
+    }
+    console.log(Vessel.list);
+    game.app.stage.removeChild(vessel.container);
+};

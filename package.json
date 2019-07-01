@@ -1,0 +1,9 @@
+{
+	"name": "spacewar2",
+	"version": "0.1",
+	"dependencies": {
+		"esm": "^3.2.25",
+		"express": "^4.17.1",
+		"socket.io": "^2.2.0"
+	}
+}

@@ -2,11 +2,13 @@ import Vessel from './Vessel.js';
 import keyboard from "./Keyboard.js";
 
 export default class Player extends Vessel {
-    constructor(game) {
-        super(game, {x: 500, y: 500}, "");
+    constructor(game, name) {
+        super(game, {x: 500, y: 500}, name);
+        this.nameLabel.visible = false;
         this.game = game;
         this.activateInput();
         this.enginePower = 10;
+        this.networkManager = null;
     }
 
     update = () => {
